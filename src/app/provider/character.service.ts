@@ -7,7 +7,64 @@ import { PaginationComponent } from './../util/pagination/pagination.component';
 })
 export class CharacterService {
 
+<<<<<<< HEAD
   constructor(private service: ServiceService) { }
+=======
+  constructor(private service: ServiceService) {}
+
+  public getCharacterById(id: number){
+    return new Promise((ret) => {
+      this.service.getDados('/v1/public/characters/' + id, '')
+      .then((data: any) => {
+          if(data && data.data && data.data.results){
+            ret(data.data.results);
+
+          } else {
+
+            ret([]);
+          }
+
+      })
+    })
+  }
+
+  public getAllCharacters(pagination: PaginationComponent, filter: string){
+    let strFilter = '';
+
+    let param = '&limit=' 
+    + pagination.getLimit() + 
+    '&offset=' + pagination.getOffset() + strFilter;
+
+    return new Promise((ret) => {
+      this.service.getDados('/v1/public/characters', 
+      param).then((data:any) => {
+        if(data && data.data && data.data.results){
+          this.updatePagination(pagination, data.data);
+          ret(data.data.results);
+
+        } else {
+          ret([]);
+
+        }
+      })
+    })
+
+  }
+
+  public getComicsByCharacter(id: number){
+    return new Promise((ret) => {
+      this.service.getDados('/v1/public/characters/' + id + '/comics', '').then((data:any) => {
+        if(data && data.data && data.data.results){
+          ret(data.data.results);
+
+        } else {
+          ret([]);
+          
+        }
+      })
+    })
+  }
+>>>>>>> f0a99a329215853f09261dafb790a1c38a95716c
 
   /* atualiza as informações de paginação */
   private updatePagination(pagination: PaginationComponent, data: any){
